@@ -2,8 +2,14 @@
   publish = "."
   command = "echo 'Static site - no build needed'"
   functions = "netlify/functions"
+  base = "."
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
