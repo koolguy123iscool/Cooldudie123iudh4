@@ -28,17 +28,18 @@
             display: block;
         }
         
-        /* Fixed overlay to cover the "Edit with Base44" button */
-        /* Position it at the top-left corner where the button appears */
+        /* Fixed overlay to cover the "Edit with Base44" button at bottom-right */
+        /* The button is at: bottom: 16px; right: 16px; */
+        /* Approximate size: ~200px wide x 44px tall */
         .button-blocker {
             position: fixed;
-            top: 12px;
-            left: 12px;
-            width: 200px;
-            height: 50px;
+            bottom: 16px;
+            right: 16px;
+            width: 220px;
+            height: 44px;
             background-color: transparent;
             pointer-events: auto;
-            z-index: 9999;
+            z-index: 1000000;
             cursor: default;
         }
     </style>
