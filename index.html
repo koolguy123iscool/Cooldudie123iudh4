@@ -27,97 +27,26 @@
             border: none;
             display: block;
         }
+        
+        /* Fixed overlay to cover the "Edit with Base44" button */
+        /* Position it at the top-left corner where the button appears */
+        .button-blocker {
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            width: 200px;
+            height: 50px;
+            background-color: transparent;
+            pointer-events: auto;
+            z-index: 9999;
+            cursor: default;
+        }
     </style>
 </head>
 <body>
     <iframe id="base44-frame" src="https://btc-bros-invest.base44.app/Home" title="BTC Bros Invest" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-top-navigation"></iframe>
     
-    <script>
-        // Remove Base44 editor UI elements and auto-close the button
-        function removeBase44UI() {
-            const iframe = document.getElementById('base44-frame');
-            try {
-                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-                if (!iframeDoc) return;
-                
-                // Find and click the close button (X)
-                const closeButtons = iframeDoc.querySelectorAll('button, [role="button"], .close, [class*="close"], [class*="x-button"], svg');
-                closeButtons.forEach(btn => {
-                    const text = btn.textContent || '';
-                    const ariaLabel = btn.getAttribute('aria-label') || '';
-                    const className = btn.className || '';
-                    
-                    // Look for close/exit buttons
-                    if (text.includes('×') || text.includes('X') || text.includes('Close') || 
-                        ariaLabel.toLowerCase().includes('close') || 
-                        className.includes('close') ||
-                        className.includes('x-button')) {
-                        
-                        // Check if this button is near the "Edit with Base44" text
-                        const parent = btn.closest('[class*="edit"], [class*="base44"], div');
-                        if (parent && parent.textContent.includes('Edit with Base44')) {
-                            btn.click();
-                            console.log('Clicked close button');
-                        }
-                    }
-                });
-                
-                // Remove all elements containing "Edit with Base44"
-                const allElements = iframeDoc.querySelectorAll('*');
-                allElements.forEach(el => {
-                    const text = el.textContent || '';
-                    const html = el.innerHTML || '';
-                    
-                    if (text.includes('Edit with Base44') || html.includes('Edit with Base44')) {
-                        // Hide the entire container
-                        el.style.display = 'none !important';
-                        el.style.visibility = 'hidden !important';
-                        el.style.pointerEvents = 'none !important';
-                    }
-                    
-                    // Also hide any element with Base44-related classes
-                    if (el.className && (el.className.includes('base44') || el.className.includes('editor'))) {
-                        el.style.display = 'none !important';
-                    }
-                });
-                
-                // Remove the button and its parent container entirely
-                const editButtons = iframeDoc.querySelectorAll('[class*="edit"], [id*="edit"], [class*="base44"], [id*="base44"]');
-                editButtons.forEach(btn => {
-                    const text = btn.textContent || '';
-                    if (text.includes('Edit') || text.includes('Base44')) {
-                        btn.style.display = 'none !important';
-                        btn.style.visibility = 'hidden !important';
-                        btn.style.pointerEvents = 'none !important';
-                        
-                        // Also hide parent if it's just a container
-                        if (btn.parentElement) {
-                            btn.parentElement.style.display = 'none !important';
-                        }
-                    }
-                });
-                
-            } catch (e) {
-                // Cross-origin iframe - cannot access directly
-                console.log('Cannot access iframe content (cross-origin)');
-            }
-        }
-        
-        // Run on iframe load
-        const iframe = document.getElementById('base44-frame');
-        iframe.addEventListener('load', function() {
-            removeBase44UI();
-            // Continue checking after load
-            setTimeout(removeBase44UI, 100);
-            setTimeout(removeBase44UI, 500);
-            setTimeout(removeBase44UI, 1000);
-        });
-        
-        // Aggressive periodic removal - every 300ms
-        setInterval(removeBase44UI, 300);
-        
-        // Initial attempt after delay
-        setTimeout(removeBase44UI, 1500);
-    </script>
+    <!-- Fixed overlay that covers the button without affecting the rest of the page -->
+    <div class="button-blocker"></div>
 </body>
 </html>
